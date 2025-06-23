@@ -33,13 +33,20 @@ st.markdown("---")
 # Fonction de chargement du modèle
 @st.cache_resource
 def load_model():
+    import os
+    model_path = "model.pkl"
+    if not os.path.exists(model_path):
+        st.error(f"Le fichier {model_path} est introuvable dans le dépôt !")
+        return None
     try:
-        return joblib.load("model.pkl")
+        return joblib.load(model_path)
     except Exception as e:
         st.error(f"Erreur lors du chargement du modèle : {e}")
         return None
-
-model = load_model()
+if model is not None:
+    st.success("✅ Modèle chargé avec succès !")
+else:
+    st.error("❌ Échec du chargement du modèle.")
 
 # Saisie des caractéristiques du client
 st.subheader("📋 Informations client")
